@@ -37,15 +37,16 @@ function isValid(string) {
 }
 
 const urls = {};
+let counter = 0;
 
 app.post("/api/shorturl", function (req, res) {
   if (!isValid(req.body.url)) {
     res.json({ error: 'invalid url' });
     return;
   }
-  const id = nanoid(2);
+  const id = counter++;
   urls[id] = req.body.url;
-  res.json({ original_url : req.body.url, short_url : `${req.protocol}://${req.get("host")}/api/shorturl/${id}` })
+  res.json({ original_url : req.body.url, short_url : id })
 });
 
 app.get("/api/shorturl/:id", function(req, res) {
